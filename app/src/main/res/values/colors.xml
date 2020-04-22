@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#ffffff</color>
+    <color name="white_alpha50">#80FFFFFF</color>
+    <color name="white_alpha20">#33FFFFFF</color>
+
+
+
+
+    <color name="black">#ff000000</color>
+    <color name="black_alph30">#4D000000</color>
+    <color name="black_alph25">#05000000</color>
+    <color name="black_alph55">#55000000</color>
+    <color name="black_alph50">#80000000</color>
+    <color name="black_alph70">#B3000000</color>
+    <color name="black_alphaa">#AA000000</color>
+    <color name="black_222222">#222222</color>
+    <color name="black_333333">#333333</color>
+
+
+
+    <color name="red">#fe0202</color>
+    <color name="red_ff6060">#ff6060</color>
+
+
+
+
+    <color name="gray_CCCCCC">#CCCCCC</color>
+    <color name="gray_bcbcbc">#BCBCBC</color>
+    <color name="gray_bebebe">#BEBEBE</color>
+    <color name="gray_DCDCDC">#DCDCDC</color>
+    <color name="gray_999999">#999999</color>
+    <color name="gray_EEEEEE">#EEEEEE</color>
+    <color name="gray_000000_aplpha30">#40000000</color>
+    <color name="gray_A8A8A8">#A8A8A8</color>
+    <color name="gray_666666">#666666</color>
+
+
+
+    <color name="blue_0099FF">#0099FF</color>
+
+
+
+    <!--   第三方包 颜色自定义 开始   -->
+
+
+    <color name="transparent">#00000000</color>
+    <color name="transparent_70">#70000000</color>
+    <color name="transparent_30">#4D000000</color>
+
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="tans">#00000000</color>
+
+    <color name="colorBarText">#F0F5E5</color>
+    <color name="deep_green">#228B22</color>
+    <color name="orderTextColor">#c0787f</color>
+
+    <color name="cornsilk">#FFF8DC</color>
+    <color name="checkboxhuang">#FF7C34</color>
+    <color name="deeppink">#FF1493</color>
+    <color name="text_channel_color_red_day">#d83b36</color>
+    <color name="orchid">#DA70D6</color>
+
+
+    <color name="crop__button_bar">#f3f3f3</color>
+    <color name="crop__button_text">#666666</color>
+    <color name="crop__selector_pressed">#1a000000</color>
+    <color name="crop__selector_focused">#77000000</color>
+    <drawable name="crop__tile">#ffffff</drawable>
+
+    <color name="date_picker_text_light">#59B29C</color>
+    <color name="date_picker_text_dark">#333333</color>
+    <color name="date_picker_bg">#FFFFFF</color>
+    <color name="date_picker_divider">#11112233</color>
+</resources>
