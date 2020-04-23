@@ -21,7 +21,6 @@ public class FirstActivity extends AppCompatActivity implements ViewPager.OnPage
     ViewPager viewPager;
     List<BottomFragment> fragmentList = new ArrayList<>();
     MyViewModel myViewModel;
-    private int currentIndex = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +43,6 @@ public class FirstActivity extends AppCompatActivity implements ViewPager.OnPage
 
     @Override
     public void onPageSelected(int position) {
-        this.currentIndex = position;
         initViewModel();
         if (myViewModel!=null){
             myViewModel.getSelected().setValue(fragmentList.get(position).getRecyclerView());

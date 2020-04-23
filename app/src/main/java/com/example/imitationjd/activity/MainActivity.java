@@ -1,103 +1,83 @@
 package com.example.imitationjd.activity;
 
 import android.os.Bundle;
-import android.widget.TableLayout;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.imitationjd.R;
+import com.example.imitationjd.adapter.FragmentAdapter;
 import com.example.imitationjd.adapter.HeaderAdapter;
-import com.example.imitationjd.model.ContentModel;
-import com.example.imitationjd.model.HeaderModel;
-import com.example.imitationjd.model.BottomModel;
+import com.example.imitationjd.fragment.BottomFragment;
+import com.example.imitationjd.viewmodel.MyViewModel;
+import com.example.imitationjd.weiget.MyLinLerLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
+    //头部
     private RecyclerView recyclerHeaderView;
     private HeaderAdapter headerAdapter;
-    private TableLayout tableLayout;
-    private List<HeaderModel> headerModelList = new ArrayList<>();
-    private List<BottomModel> bottomModels = new ArrayList<>();
+    private List<String> headerStringArray = new ArrayList<>();
 
+    //底部
+    MyLinLerLayout myLinLerLayout;
+    ViewPager viewPager;
+    List<BottomFragment> fragmentList = new ArrayList<>();
+    MyViewModel myViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //头部
         recyclerHeaderView = this.findViewById(R.id.main_header_recyclerview);
-        for (int i = 0; i < 20; i++) {
-            HeaderModel headerModel = new HeaderModel();
-            headerModel.setName("我是header部分:" + i);
-            headerModelList.add(headerModel);
+        for (int i=0;i<30;i++){
+            headerStringArray.add("我是标题:"+i);
         }
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        headerAdapter = new HeaderAdapter(headerModelList, this);
-        recyclerHeaderView.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager headerLinLayoutManager = new LinearLayoutManager(this);
+        headerAdapter = new HeaderAdapter(headerStringArray,this);
+        recyclerHeaderView.setLayoutManager(headerLinLayoutManager);
         recyclerHeaderView.setAdapter(headerAdapter);
-        initBottom();
 
+        //底部
+        myLinLerLayout = this.findViewById(R.id.first_my_linlayout);
+        myLinLerLayout.setFirstActivity(this);
+        viewPager = this.findViewById(R.id.first_viewpager);
+        for (int i = 0; i < 4; i++) {
+            fragmentList.add(new BottomFragment(i));
+        }
+        viewPager.setAdapter(new FragmentAdapter(this.getSupportFragmentManager(),fragmentList));
+        viewPager.addOnPageChangeListener(this);
+        viewPager.setOffscreenPageLimit(4);
+    }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
     }
 
-
-    private void initBottom() {
-        BottomModel bottomModel = new BottomModel();
-        bottomModel.setName("精选");
-        bottomModel.setDesc("为你推荐");
-        bottomModel.setType(2);
-        bottomModel.setSelected(true);
-        List<ContentModel> contentModelList = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            ContentModel contentModel = new ContentModel();
-            contentModel.setName("我是内容1");
-            contentModelList.add(contentModel);
+    @Override
+    public void onPageSelected(int position) {
+        initViewModel();
+        if (myViewModel!=null){
+            myViewModel.getSelected().setValue(fragmentList.get(position).getRecyclerView());
         }
-        bottomModel.setContentModelList(contentModelList);
-        bottomModels.add(bottomModel);
-
-        BottomModel bottomModel2 = new BottomModel();
-        bottomModel2.setName("新品");
-        bottomModel2.setDesc("春日唤新");
-        bottomModel2.setType(2);
-        List<ContentModel> contentModelList2 = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            ContentModel contentModel = new ContentModel();
-            contentModel.setName("我是内容2");
-            contentModelList2.add(contentModel);
-        }
-        bottomModel2.setContentModelList(contentModelList2);
-        bottomModels.add(bottomModel2);
-
-
-        BottomModel bottomModel3 = new BottomModel();
-        bottomModel3.setName("直播");
-        bottomModel3.setDesc("主播力推");
-        bottomModel3.setType(2);
-        List<ContentModel> contentModelList3 = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            ContentModel contentModel = new ContentModel();
-            contentModel.setName("我是内容3");
-            contentModelList3.add(contentModel);
-        }
-        bottomModel3.setContentModelList(contentModelList3);
-        bottomModels.add(bottomModel3);
-
-        BottomModel bottomModel4 = new BottomModel();
-        bottomModel4.setName("实惠");
-        bottomModel4.setDesc("超值好货");
-        bottomModel4.setType(2);
-        List<ContentModel> contentModelList4 = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            ContentModel contentModel = new ContentModel();
-            contentModel.setName("我是内容4");
-            contentModelList4.add(contentModel);
-        }
-        bottomModel4.setContentModelList(contentModelList4);
-        bottomModels.add(bottomModel4);
     }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    private void initViewModel(){
+        if (myViewModel == null ){
+            myViewModel =  new ViewModelProvider(this.getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(MyViewModel.class);
+        }
+    }
+
 }

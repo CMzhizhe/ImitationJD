@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.imitationjd.R;
 import com.example.imitationjd.activity.FirstActivity;
+import com.example.imitationjd.activity.MainActivity;
 import com.example.imitationjd.adapter.BottomAdapter;
 
 import java.util.ArrayList;
@@ -54,8 +55,14 @@ public class BottomFragment extends Fragment {
         super.onResume();
         if (getActivity()!=null && currentIndex == 0 && isFirstLoad){
             isFirstLoad = false;
-            FirstActivity activity = (FirstActivity) getActivity();
-            activity.onPageSelected(currentIndex);
+            if (getActivity() instanceof FirstActivity){
+                FirstActivity activity = (FirstActivity) getActivity();
+                activity.onPageSelected(currentIndex);
+            }else if (getActivity() instanceof MainActivity){
+                MainActivity activity = (MainActivity) getActivity();
+                activity.onPageSelected(currentIndex);
+            }
+
         }
     }
 

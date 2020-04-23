@@ -1,24 +1,22 @@
 package com.example.imitationjd.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.imitationjd.R;
-import com.example.imitationjd.model.HeaderModel;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class HeaderAdapter extends RecyclerView.Adapter<HeaderAdapter.ViewHolder>{
-    List<HeaderModel> headerModelList;
+    List<String> headerModelList;
     Activity activity;
 
-    public HeaderAdapter(List<HeaderModel> headerModelList, Activity activity) {
+    public HeaderAdapter(List<String> headerModelList, Activity activity) {
         this.headerModelList = headerModelList;
         this.activity = activity;
     }
@@ -42,7 +40,7 @@ public class HeaderAdapter extends RecyclerView.Adapter<HeaderAdapter.ViewHolder
         }else {
             holder.textView.setBackgroundColor(activity.getResources().getColor(R.color.colorPrimary));
         }
-        holder.textView.setText(headerModelList.get(position).getName());
+        holder.textView.setText(headerModelList.get(position));
     }
 
     @Override

@@ -5,22 +5,22 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.example.imitationjd.R;
+import com.example.imitationjd.viewmodel.MyViewModel;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.NestedScrollingParent3;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.imitationjd.R;
-import com.example.imitationjd.activity.FirstActivity;
-import com.example.imitationjd.viewmodel.MyViewModel;
 
 public class MyLinLerLayout extends LinearLayout implements NestedScrollingParent3 {
     private String TAG = MyLinLerLayout.class.getSimpleName();
@@ -31,17 +31,18 @@ public class MyLinLerLayout extends LinearLayout implements NestedScrollingParen
     private LinearLayout titleDescLayout;
     private boolean animatorIsRunning = false;
 
-    public void setFirstActivity(FirstActivity firstActivity) {
+
+    public void setFirstActivity(AppCompatActivity firstActivity) {
         myViewModel = new ViewModelProvider(firstActivity.getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(firstActivity.getApplication())).get(MyViewModel.class);
         myViewModel.getSelected().observe(firstActivity, new Observer<RecyclerView>() {
             @Override
             public void onChanged(RecyclerView recyclerView) {
                 currentRecyclerView = recyclerView;
                 currentRecyclerView.scrollToPosition(0);
-                Log.e(TAG,"currentRecyclerView 地址："+recyclerView.toString());
             }
         });
     }
+
 
     public MyLinLerLayout(Context context) {
         super(context);
