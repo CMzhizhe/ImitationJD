@@ -41,7 +41,7 @@ public class BottomFragment extends Fragment {
     private void init(View view) {
         recyclerView = view.findViewById(R.id.fragment_recyclerview);
         for (int i = 0; i < 50; i++) {
-            stringList.add("哈哈哈哈-" + currentIndex + i);
+            stringList.add("哈哈哈哈-" + currentIndex +"-"+ i);
         }
         bottomAdapter = new BottomAdapter(this.getActivity(), stringList);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this.getContext());

@@ -1,5 +1,7 @@
 package com.example.imitationjd.weiget;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -28,12 +30,15 @@ public class MyLinLerLayout extends LinearLayout implements NestedScrollingParen
     private Context mContext;
     private LinearLayout titleDescLayout;
     private boolean animatorIsRunning = false;
+
     public void setFirstActivity(FirstActivity firstActivity) {
         myViewModel = new ViewModelProvider(firstActivity.getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(firstActivity.getApplication())).get(MyViewModel.class);
         myViewModel.getSelected().observe(firstActivity, new Observer<RecyclerView>() {
             @Override
             public void onChanged(RecyclerView recyclerView) {
                 currentRecyclerView = recyclerView;
+                currentRecyclerView.scrollToPosition(0);
+                Log.e(TAG,"currentRecyclerView 地址："+recyclerView.toString());
             }
         });
     }
@@ -90,12 +95,11 @@ public class MyLinLerLayout extends LinearLayout implements NestedScrollingParen
             }
         }
 
-        if (dy > 0 ){//手指向上
+        if (dy > 0) {//手指向上
             if (isDescExOpen && !animatorIsRunning) {
-                isDescExOpen = false;
                 animatorIsRunning = true;
                 ValueAnimator valueAnimator = ValueAnimator.ofFloat(1.0f, 0.1f);
-                valueAnimator.setDuration(5 * 1000);
+                valueAnimator.setDuration(800);
                 valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
@@ -103,10 +107,13 @@ public class MyLinLerLayout extends LinearLayout implements NestedScrollingParen
                         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) titleDescLayout.getLayoutParams();
                         layoutParams.height = (int) (getTitleDescHeight() * value);
                         titleDescLayout.setLayoutParams(layoutParams);
-                        if (layoutParams.height == 0) {
-                            animatorIsRunning = false;
-                            Log.e(TAG,"height:"+titleDescLayout.getLayoutParams().height);
-                        }
+                    }
+                });
+                valueAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        isDescExOpen = false;
+                        animatorIsRunning = false;
                     }
                 });
                 valueAnimator.start();
@@ -115,11 +122,10 @@ public class MyLinLerLayout extends LinearLayout implements NestedScrollingParen
 
 
         if (dy < 0 && !currentRecyclerView.canScrollVertically(dy)) {//手指向下
-            if (!isDescExOpen &&!animatorIsRunning){
-                isDescExOpen = true;
+            if (!isDescExOpen && !animatorIsRunning) {
                 animatorIsRunning = true;
                 ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.1f, 1.0f);
-                valueAnimator.setDuration(5 * 1000);
+                valueAnimator.setDuration(800);
                 valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
@@ -127,9 +133,13 @@ public class MyLinLerLayout extends LinearLayout implements NestedScrollingParen
                         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) titleDescLayout.getLayoutParams();
                         layoutParams.height = (int) (getTitleDescHeight() * value);
                         titleDescLayout.setLayoutParams(layoutParams);
-                       if (value ==1){
-                            animatorIsRunning = false;
-                        }
+                    }
+                });
+                valueAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        isDescExOpen = true;
+                        animatorIsRunning = false;
                     }
                 });
                 valueAnimator.start();
