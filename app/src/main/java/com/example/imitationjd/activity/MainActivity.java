@@ -1,4 +1,4 @@
-package com.example.imitationjd;
+package com.example.imitationjd.activity;
 
 import android.os.Bundle;
 import android.widget.TableLayout;
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.imitationjd.R;
 import com.example.imitationjd.adapter.HeaderAdapter;
 import com.example.imitationjd.model.ContentModel;
 import com.example.imitationjd.model.HeaderModel;
@@ -17,9 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerHeaderView;
     private HeaderAdapter headerAdapter;
-
+    private TableLayout tableLayout;
     private List<HeaderModel> headerModelList = new ArrayList<>();
     private List<BottomModel> bottomModels = new ArrayList<>();
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = this.findViewById(R.id.main_header_recyclerview);
+        recyclerHeaderView = this.findViewById(R.id.main_header_recyclerview);
         for (int i = 0; i < 20; i++) {
             HeaderModel headerModel = new HeaderModel();
             headerModel.setName("我是header部分:" + i);
@@ -35,9 +36,12 @@ public class MainActivity extends AppCompatActivity {
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         headerAdapter = new HeaderAdapter(headerModelList, this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(headerAdapter);
+        recyclerHeaderView.setLayoutManager(linearLayoutManager);
+        recyclerHeaderView.setAdapter(headerAdapter);
         initBottom();
+
+
+
     }
 
 
