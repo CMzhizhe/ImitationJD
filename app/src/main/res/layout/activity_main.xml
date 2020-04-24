@@ -18,7 +18,7 @@
     </FrameLayout>
 
 
-    <com.example.imitationjd.weiget.MyLinLerLayout
+    <com.example.imitationjd.weiget.MyMainLinLerLayout
         android:id="@+id/first_my_linlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -184,6 +184,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </com.example.imitationjd.weiget.MyLinLerLayout>
+    </com.example.imitationjd.weiget.MyMainLinLerLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

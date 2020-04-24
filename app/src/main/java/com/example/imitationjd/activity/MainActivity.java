@@ -1,7 +1,6 @@
 package com.example.imitationjd.activity;
 
 import android.os.Bundle;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,7 +13,8 @@ import com.example.imitationjd.adapter.FragmentAdapter;
 import com.example.imitationjd.adapter.HeaderAdapter;
 import com.example.imitationjd.fragment.BottomFragment;
 import com.example.imitationjd.viewmodel.MyViewModel;
-import com.example.imitationjd.weiget.MyLinLerLayout;
+import com.example.imitationjd.weiget.MyFirstLinLerLayout;
+import com.example.imitationjd.weiget.MyMainLinLerLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private List<String> headerStringArray = new ArrayList<>();
 
     //底部
-    MyLinLerLayout myLinLerLayout;
+    MyMainLinLerLayout myFirstLinLerLayout;
     ViewPager viewPager;
     List<BottomFragment> fragmentList = new ArrayList<>();
     MyViewModel myViewModel;
@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         recyclerHeaderView.setAdapter(headerAdapter);
 
         //底部
-        myLinLerLayout = this.findViewById(R.id.first_my_linlayout);
-        myLinLerLayout.setFirstActivity(this);
+        myFirstLinLerLayout = this.findViewById(R.id.first_my_linlayout);
+        myFirstLinLerLayout.setFirstActivity(this);
         viewPager = this.findViewById(R.id.first_viewpager);
         for (int i = 0; i < 4; i++) {
             fragmentList.add(new BottomFragment(i));

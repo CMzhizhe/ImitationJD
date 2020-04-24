@@ -11,13 +11,13 @@ import com.example.imitationjd.R;
 import com.example.imitationjd.adapter.FragmentAdapter;
 import com.example.imitationjd.fragment.BottomFragment;
 import com.example.imitationjd.viewmodel.MyViewModel;
-import com.example.imitationjd.weiget.MyLinLerLayout;
+import com.example.imitationjd.weiget.MyFirstLinLerLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FirstActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
-    MyLinLerLayout myLinLerLayout;
+    MyFirstLinLerLayout myFirstLinLerLayout;
     ViewPager viewPager;
     List<BottomFragment> fragmentList = new ArrayList<>();
     MyViewModel myViewModel;
@@ -25,8 +25,8 @@ public class FirstActivity extends AppCompatActivity implements ViewPager.OnPage
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
-        myLinLerLayout = this.findViewById(R.id.first_my_linlayout);
-        myLinLerLayout.setFirstActivity(this);
+        myFirstLinLerLayout = this.findViewById(R.id.first_my_linlayout);
+        myFirstLinLerLayout.setFirstActivity(this);
         viewPager = this.findViewById(R.id.first_viewpager);
         for (int i = 0; i < 4; i++) {
             fragmentList.add(new BottomFragment(i));

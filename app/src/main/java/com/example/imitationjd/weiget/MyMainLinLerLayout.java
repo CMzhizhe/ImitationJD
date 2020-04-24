@@ -5,12 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-
-import com.example.imitationjd.R;
-import com.example.imitationjd.viewmodel.MyViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,15 +18,22 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyLinLerLayout extends LinearLayout implements NestedScrollingParent3 {
-    private String TAG = MyLinLerLayout.class.getSimpleName();
+import com.example.imitationjd.R;
+import com.example.imitationjd.viewmodel.MyViewModel;
+
+/**
+ * @date 创建时间:2020/4/24 0024
+ * @auther gaoxiaoxiong
+ * @Descriptiion 用于main activity
+ **/
+public class MyMainLinLerLayout extends LinearLayout implements NestedScrollingParent3 {
+    private String TAG = MyMainLinLerLayout.class.getSimpleName();
     private RecyclerView currentRecyclerView;
     private MyViewModel myViewModel;
     private boolean isDescExOpen = true;
     private Context mContext;
     private LinearLayout titleDescLayout;
     private boolean animatorIsRunning = false;
-
 
     public void setFirstActivity(AppCompatActivity firstActivity) {
         myViewModel = new ViewModelProvider(firstActivity.getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(firstActivity.getApplication())).get(MyViewModel.class);
@@ -44,17 +47,17 @@ public class MyLinLerLayout extends LinearLayout implements NestedScrollingParen
     }
 
 
-    public MyLinLerLayout(Context context) {
+    public MyMainLinLerLayout(Context context) {
         super(context);
         this.mContext = context;
     }
 
-    public MyLinLerLayout(Context context, @Nullable AttributeSet attrs) {
+    public MyMainLinLerLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
     }
 
-    public MyLinLerLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public MyMainLinLerLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
     }
@@ -66,7 +69,7 @@ public class MyLinLerLayout extends LinearLayout implements NestedScrollingParen
 
     @Override
     public boolean onStartNestedScroll(@NonNull View child, @NonNull View target, int axes, int type) {
-        return (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != -1;//判断是否为垂直滚动;
+        return (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != -1 && this.getTranslationY() == 0;
     }
 
     @Override
@@ -150,9 +153,7 @@ public class MyLinLerLayout extends LinearLayout implements NestedScrollingParen
 
     }
 
-
     private int getTitleDescHeight() {
         return mContext.getResources().getDimensionPixelOffset(R.dimen.first_title_desc);
     }
-
 }

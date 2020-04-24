@@ -6,53 +6,54 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.imitationjd.R;
+import com.example.imitationjd.model.ShopModel;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class HeaderAdapter extends RecyclerView.Adapter<HeaderAdapter.ViewHolder>{
-    List<String> headerModelList;
+
+public class HeaderAdapter extends RecyclerView.Adapter<HeaderAdapter.HeaderViewHolder>{
+    List<String> shopModelArrayList;
     Activity activity;
 
-    public HeaderAdapter(List<String> headerModelList, Activity activity) {
-        this.headerModelList = headerModelList;
+    public HeaderAdapter(List<String> shopModelArrayList, Activity activity) {
+        this.shopModelArrayList = shopModelArrayList;
         this.activity = activity;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HeaderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = activity.getLayoutInflater().inflate(R.layout.item_header,parent,false);
-        return new ViewHolder(view);
+        return new HeaderViewHolder(view);
+
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return super.getItemViewType(position);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HeaderViewHolder holder, int position) {
         if (position % 2 == 0){
             holder.textView.setBackgroundColor(activity.getResources().getColor(R.color.colorAccent));
         }else {
             holder.textView.setBackgroundColor(activity.getResources().getColor(R.color.colorPrimary));
         }
-        holder.textView.setText(headerModelList.get(position));
+        holder.textView.setText(shopModelArrayList.get(position));
     }
+
+
 
     @Override
     public int getItemCount() {
-        return headerModelList.size();
+        return shopModelArrayList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class HeaderViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
-        public ViewHolder(@NonNull View itemView) {
+        public HeaderViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.item_text);
         }
     }
+
 }
