@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -16,7 +18,9 @@ import androidx.core.view.NestedScrollingParent3;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.imitationjd.R;
 import com.example.imitationjd.viewmodel.MyViewModel;
@@ -34,6 +38,7 @@ public class MyMainLinLerLayout extends LinearLayout implements NestedScrollingP
     private Context mContext;
     private LinearLayout titleDescLayout;
     private boolean animatorIsRunning = false;
+
 
     public void setFirstActivity(AppCompatActivity firstActivity) {
         myViewModel = new ViewModelProvider(firstActivity.getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(firstActivity.getApplication())).get(MyViewModel.class);
@@ -62,6 +67,26 @@ public class MyMainLinLerLayout extends LinearLayout implements NestedScrollingP
         this.mContext = context;
     }
 
+    private int lastY = 0;
+    private int dy = 0;
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:{
+                lastY = (int) ev.getY();
+            }
+            break;
+
+            case MotionEvent.ACTION_MOVE:{
+                int currentY = (int) ev.getY();
+                dy = lastY - currentY;
+                lastY = currentY;
+            }
+            break;
+        }
+        return super.onInterceptTouchEvent(ev);
+    }
+
     @Override
     public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, @NonNull int[] consumed) {
 
@@ -69,7 +94,19 @@ public class MyMainLinLerLayout extends LinearLayout implements NestedScrollingP
 
     @Override
     public boolean onStartNestedScroll(@NonNull View child, @NonNull View target, int axes, int type) {
-        return (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != -1 && this.getTranslationY() == 0;
+        if ((axes & ViewCompat.SCROLL_AXIS_VERTICAL) != -1 && this.getTranslationY() ==0 ){
+            if (isDescExOpen && !animatorIsRunning && target instanceof RecyclerView && dy < 0){
+                if (!currentRecyclerView.canScrollVertically(dy)){
+                    return false;
+                }else {
+                    return true;
+                }
+            }else {
+                return true;
+            }
+        }else {
+            return false;
+        }
     }
 
     @Override
@@ -103,7 +140,7 @@ public class MyMainLinLerLayout extends LinearLayout implements NestedScrollingP
             if (isDescExOpen && !animatorIsRunning) {
                 animatorIsRunning = true;
                 ValueAnimator valueAnimator = ValueAnimator.ofFloat(1.0f, 0.1f);
-                valueAnimator.setDuration(800);
+                valueAnimator.setDuration(200);
                 valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
@@ -122,14 +159,15 @@ public class MyMainLinLerLayout extends LinearLayout implements NestedScrollingP
                 });
                 valueAnimator.start();
             }
+
         }
 
 
-        if (dy < 0 && !currentRecyclerView.canScrollVertically(dy)) {//手指向下
-            if (!isDescExOpen && !animatorIsRunning) {
+        if (dy < 0 ) {//手指向下
+            if (!isDescExOpen && !animatorIsRunning && !currentRecyclerView.canScrollVertically(dy)) {
                 animatorIsRunning = true;
                 ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.1f, 1.0f);
-                valueAnimator.setDuration(800);
+                valueAnimator.setDuration(200);
                 valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
@@ -148,12 +186,12 @@ public class MyMainLinLerLayout extends LinearLayout implements NestedScrollingP
                 });
                 valueAnimator.start();
             }
-            consumed[1] = dy;
         }
-
     }
 
     private int getTitleDescHeight() {
         return mContext.getResources().getDimensionPixelOffset(R.dimen.first_title_desc);
     }
+
+
 }
