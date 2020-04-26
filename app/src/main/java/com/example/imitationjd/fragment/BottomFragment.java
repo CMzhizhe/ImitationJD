@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.imitationjd.R;
 import com.example.imitationjd.activity.FirstActivity;
 import com.example.imitationjd.activity.MainActivity;
+import com.example.imitationjd.activity.ThiredActivity;
 import com.example.imitationjd.adapter.BottomAdapter;
 
 import java.util.ArrayList;
@@ -61,6 +62,9 @@ public class BottomFragment extends Fragment {
             }else if (getActivity() instanceof MainActivity){
                 MainActivity activity = (MainActivity) getActivity();
                 activity.onPageSelected(currentIndex);
+            }else if (getActivity() instanceof ThiredActivity){
+                ThiredActivity activity = (ThiredActivity) getActivity();
+
             }
 
         }
