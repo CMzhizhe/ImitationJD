@@ -62,6 +62,7 @@ public class NestedFrameLayout extends FrameLayout implements NestedScrollingPar
             @Override
             public void onChanged(RecyclerView recyclerView) {
                 childRecyclerView = recyclerView;
+                childRecyclerView.scrollToPosition(0);
             }
         });
     }
