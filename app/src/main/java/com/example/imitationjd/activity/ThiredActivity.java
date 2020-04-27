@@ -1,18 +1,19 @@
 package com.example.imitationjd.activity;
 
 import android.os.Bundle;
-import android.widget.FrameLayout;
+import android.view.ViewTreeObserver;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.imitationjd.R;
 import com.example.imitationjd.adapter.ThiredAdapter;
 import com.example.imitationjd.model.ShopModel;
-import com.example.imitationjd.weiget.MyFrameLinlerLayout;
-import com.example.imitationjd.weiget.NestedLinLerLayout;
+import com.example.imitationjd.viewmodel.MyViewModel;
+import com.example.imitationjd.weiget.NestedFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +29,13 @@ public class ThiredActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ThiredAdapter thiredAdapter;
     private List<ShopModel> shopModelList = new ArrayList<>();
-
+    private NestedFrameLayout nestedFrameLayout;
+    private MyViewModel myViewModel;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thired);
+        nestedFrameLayout = this.findViewById(R.id.thired_framelayout);
         recyclerView = this.findViewById(R.id.thired_recyclerview);
         for (int i = 0; i < 30; i++) {
             ShopModel shopModel = new ShopModel();
@@ -43,10 +46,20 @@ public class ThiredActivity extends AppCompatActivity {
         ShopModel shopModel = new ShopModel();
         shopModel.setType(THIRED_TYPE_1);
         shopModelList.add(shopModel);
-
+        nestedFrameLayout.setThiredActivity(this,recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         thiredAdapter = new ThiredAdapter(shopModelList,this);
         recyclerView.setAdapter(thiredAdapter);
+        myViewModel = new ViewModelProvider(this.getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(MyViewModel.class);
+        nestedFrameLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+               int height =  nestedFrameLayout.getHeight();
+               myViewModel.getIntegerMutableLiveData().setValue(height);
+            }
+        });
+
+        recyclerView.setNestedScrollingEnabled(true);
     }
 }

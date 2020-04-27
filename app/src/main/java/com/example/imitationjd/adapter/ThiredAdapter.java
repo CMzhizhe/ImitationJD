@@ -5,7 +5,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +15,7 @@ import com.example.imitationjd.activity.ThiredActivity;
 import com.example.imitationjd.fragment.BottomFragment;
 import com.example.imitationjd.model.ShopModel;
 import com.example.imitationjd.viewmodel.MyViewModel;
-import com.example.imitationjd.weiget.MyThiredLinLerLayout;
+import com.example.imitationjd.weiget.MyThiredBottomLinLerLayout;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -83,15 +82,28 @@ public class ThiredAdapter extends RecyclerView.Adapter {
    public static class ViewPagerViewHolder extends RecyclerView.ViewHolder implements ViewPager.OnPageChangeListener {
         List<BottomFragment> fragmentList = new ArrayList<>();
         WeakReference<ThiredAdapter> thiredAdapterWeakReference;
-        MyThiredLinLerLayout myThiredLinLerLayout;
+        MyThiredBottomLinLerLayout myThiredBottomLinLerLayout;
         ViewPager viewPager;
         MyViewModel myViewModel;
         int currentIndex = 0;
         public ViewPagerViewHolder(@NonNull final View itemView, ThiredAdapter thiredAdapter) {
             super(itemView);
             thiredAdapterWeakReference = new WeakReference<ThiredAdapter>(thiredAdapter);
+
+            myViewModel = new ViewModelProvider(thiredAdapterWeakReference.get().activity.getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(thiredAdapterWeakReference.get().activity.getApplication())).get(MyViewModel.class);
+            myViewModel.getIntegerMutableLiveData().observe(thiredAdapterWeakReference.get().activity, new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+                    layoutParams.height = integer;
+                    itemView.setLayoutParams(layoutParams);
+                }
+            });
+
             viewPager = itemView.findViewById(R.id.thired_viewpager);
-            myThiredLinLerLayout = itemView.findViewById(R.id.item_thired_bottom_mythired_linlerlayout);
+            myThiredBottomLinLerLayout = itemView.findViewById(R.id.item_thired_bottom_mythired_linlerlayout);
+
+            myViewModel.getMyThiredLinLerLayoutMutableLiveData().setValue(myThiredBottomLinLerLayout);
 
             for (int i = 0; i < 4; i++) {
                 fragmentList.add(new BottomFragment(i));
@@ -99,19 +111,9 @@ public class ThiredAdapter extends RecyclerView.Adapter {
             viewPager.setAdapter(new FragmentAdapter(thiredAdapterWeakReference.get().activity.getSupportFragmentManager(),fragmentList));
             viewPager.addOnPageChangeListener(this);
             viewPager.setOffscreenPageLimit(4);
-            myThiredLinLerLayout.setThiredActivity(thiredAdapterWeakReference.get().activity);
-            myViewModel = new ViewModelProvider(thiredAdapterWeakReference.get().activity.getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(thiredAdapterWeakReference.get().activity.getApplication())).get(MyViewModel.class);
-            viewPager.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-                @Override
-                public void onViewAttachedToWindow(View v) {
-                    myViewModel.getSelected().setValue(fragmentList.get(currentIndex).getRecyclerView());
-                }
+            myThiredBottomLinLerLayout.setThiredActivity(thiredAdapterWeakReference.get().activity);
 
-                @Override
-                public void onViewDetachedFromWindow(View v) {
-                    myViewModel.getSelected().setValue(null);
-                }
-            });
+
         }
 
         @Override
@@ -122,6 +124,9 @@ public class ThiredAdapter extends RecyclerView.Adapter {
         @Override
         public void onPageSelected(int position) {
             currentIndex = position;
+            if (fragmentList.get(currentIndex).getRecyclerView()!=null){
+                myViewModel.getSelected().setValue(fragmentList.get(currentIndex).getRecyclerView());
+            }
         }
 
         @Override

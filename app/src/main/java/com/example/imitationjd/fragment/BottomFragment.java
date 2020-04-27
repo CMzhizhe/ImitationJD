@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +17,7 @@ import com.example.imitationjd.activity.FirstActivity;
 import com.example.imitationjd.activity.MainActivity;
 import com.example.imitationjd.activity.ThiredActivity;
 import com.example.imitationjd.adapter.BottomAdapter;
+import com.example.imitationjd.viewmodel.MyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ public class BottomFragment extends Fragment {
     BottomAdapter bottomAdapter;
     private int currentIndex = 0;
     private boolean isFirstLoad = true;
-
+    private MyViewModel myViewModel;
     private List<String> stringList = new ArrayList<>();
     public BottomFragment(int currentIndex) {
         super();
@@ -41,6 +43,8 @@ public class BottomFragment extends Fragment {
     }
 
     private void init(View view) {
+        myViewModel = new ViewModelProvider(getActivity().getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(MyViewModel.class);
+
         recyclerView = view.findViewById(R.id.fragment_recyclerview);
         for (int i = 0; i < 50; i++) {
             stringList.add("哈哈哈哈-" + currentIndex +"-"+ i);
@@ -49,6 +53,8 @@ public class BottomFragment extends Fragment {
         LinearLayoutManager linearLayout = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(linearLayout);
         recyclerView.setAdapter(bottomAdapter);
+
+        recyclerView.setNestedScrollingEnabled(true);
     }
 
     @Override
@@ -63,8 +69,7 @@ public class BottomFragment extends Fragment {
                 MainActivity activity = (MainActivity) getActivity();
                 activity.onPageSelected(currentIndex);
             }else if (getActivity() instanceof ThiredActivity){
-                ThiredActivity activity = (ThiredActivity) getActivity();
-
+                myViewModel.getSelected().setValue(recyclerView);
             }
 
         }
